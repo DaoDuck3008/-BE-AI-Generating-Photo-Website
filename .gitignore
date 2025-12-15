@@ -1,0 +1,87 @@
+# =========================
+# Python cache / build
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.pytest_cache/
+.mypy_cache/
+
+# =========================
+# Virtual environment
+# =========================
+env/
+venv/
+.venv/
+ENV/
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+
+# =========================
+# Assets / Uploaded images
+# =========================
+assets/inputs/*
+assets/outputs/*
+assets/tmp/*
+
+# Giữ folder nhưng không commit file
+!assets/inputs/.gitkeep
+!assets/outputs/.gitkeep
+!assets/tmp/.gitkeep
+
+# =========================
+# Cache / intermediate results
+# =========================
+cache/
+*.cache
+*.pt
+*.pth
+*.onnx
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Build / Export
+# =========================
+dist/
+build/
+*.zip
+*.tar.gz
+*.pdf
+
+# =========================
+# Jupyter Notebook
+# =========================
+.ipynb_checkpoints/
+*.ipynb
+
+# =========================
+# Temporary files
+# =========================
+tmp/
+temp/
