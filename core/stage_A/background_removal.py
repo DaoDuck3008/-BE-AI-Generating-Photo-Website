@@ -79,6 +79,8 @@ def remove_background(model=model, device=device, image_path=""):
     refined = refine_foreground(image, alpha_pil, r=90, device=device)
     refined.putalpha(alpha_pil)
 
+    print("✅ Stage A2 - Background removed.")
+
     return refined
 
 
