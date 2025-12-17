@@ -10,6 +10,11 @@ einops
 mediapipe==0.10.14
 pillow
 
+fastapi
+uvicorn
+cloudinary
+python-dotenv
+
 tqdm
 prettytable
 tabulate
