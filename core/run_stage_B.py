@@ -2,7 +2,7 @@ from PIL import Image
 from io import BytesIO
 import requests
 
-from core.stage_B import validate_cloudinary_url, adjust_color_image, add_background_color, resize_image
+from core.stage_B import validate_cloudinary_url, adjust_color_image, add_background_color, resize_image, layout_4R
 
 def run_stage_B (
         img_path: str,
@@ -11,7 +11,7 @@ def run_stage_B (
         brightness: int,
         contrast: int,
         saturation: int,
-        print_form: str
+        print_form: bool
         ):
     # Kiểm tra xem ảnh có đúng là đến từ cloudinary không? 
     validate_cloudinary_url(img_path)
@@ -36,6 +36,10 @@ def run_stage_B (
 
     # Resize ảnh đúng chuẩn DPI 300
     final_img = resize_image(bg_img, size)
-    final_img.show()
+
+    # đưa ảnh vào khung in 
+    canvas = layout_4R(final_img, size)        
+    
+    canvas.show()
 
     return
