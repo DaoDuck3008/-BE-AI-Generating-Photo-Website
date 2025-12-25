@@ -24,9 +24,12 @@ ROTATE_FOR_LAYOUT = {
     "2x2 inch": True,
 }
 
+class LayoutError(Exception):
+    pass
+
 def layout_4R (image: Image.Image, size): 
     if size not in SIZE_MAP:
-        raise ValueError("Unsupported photo type")
+        raise LayoutError("Unsupported photo type")
     
     img_w, img_h = SIZE_MAP[size]
     rows, cols = LAYOUTS[size]

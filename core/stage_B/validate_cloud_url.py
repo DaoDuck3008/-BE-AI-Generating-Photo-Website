@@ -1,15 +1,18 @@
 from urllib.parse import urlparse
 
+class ValidateError(Exception):
+    pass
+
 def validate_cloudinary_url(url: str):
     if not isinstance(url, str):
-        raise ValueError("Image URL must be a string")
+        raise ValidateError("Image URL must be a string")
 
     parsed = urlparse(url)
 
     if parsed.scheme not in ("http", "https"):
-        raise ValueError("Invalid URL scheme")
+        raise ValidateError("Invalid URL scheme")
 
     if "res.cloudinary.com" not in parsed.netloc:
-        raise ValueError("Invalid Cloudinary domain")
+        raise ValidateError("Invalid Cloudinary domain")
 
     return True

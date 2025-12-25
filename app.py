@@ -5,7 +5,7 @@ from pathlib import Path
 from fastapi.middleware.cors import CORSMiddleware
 from core.job_store import JOB_STORE, create_job
 from core.run_stage_A import run_stage_A
-from core.run_stage_B import run_stage_B
+from core.run_stage_B import run_stage_B, StageBError
 import shutil
 import threading
 from core.ai_models import birefnet_model  # Đảm bảo mô hình được tải khi khởi động ứng dụng
@@ -81,10 +81,30 @@ def get_status(job_id: str):
 # API Chỉnh sửa ảnh Stage B
 @app.post('/api/edit')
 async def edit_image(editImage: EditImage):
-    print(">>> Check all input: ", editImage)
+    try:
+        run_stage_B(editImage.file, editImage.bgColor, editImage.size, editImage.brightness, editImage.contrast, editImage.saturation, editImage.printForm)
 
-    run_stage_B(editImage.file, editImage.bgColor, editImage.size, editImage.brightness, editImage.contrast, editImage.saturation, editImage.printForm)
+        return {
+            "success": True,
+            "img_url": ""
+        }
 
-    return editImage
+    except StageBError as e: 
+        raise  HTTPException(
+            status_code = 400,
+            detail = {
+                "code": e.code,
+                "message": e.message
+            }
+        )
+
+    except Exception:
+        raise HTTPException(
+            status_code = 500,
+            detail={
+                "code": "SERVER_ERROR",
+                "message": "Unexpected server error"
+            }
+        )
 
     

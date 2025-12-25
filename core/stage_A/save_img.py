@@ -30,8 +30,6 @@ def save_img(image: Image.Image, folder="potrait_photos", public_id=None, format
             resource_type="image"
         )
 
-        print("✅ Stage A4 - Image uploaded to Cloudinary successfully.")
-
         return
     except Exception as e:
         print(f"Error uploading image: {e}")

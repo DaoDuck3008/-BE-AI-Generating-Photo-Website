@@ -6,6 +6,9 @@ SIZE_MAP = {
     "2x2 inch": (600, 600),
 }
 
+class ResizeError(Exception):
+    pass
+
 def crop_object_cover(img: Image.Image, target_w: int, target_h: int) -> Image.Image:
     src_w, src_h = img.size
     src_ratio = src_w / src_h
@@ -27,7 +30,7 @@ def crop_object_cover(img: Image.Image, target_w: int, target_h: int) -> Image.I
 
 def resize_image (img: Image.Image, size: str) -> Image.Image:
     if size not in SIZE_MAP:
-        raise ValueError("Unsupported size")
+        raise ResizeError("Unsupported size")
 
     target_w , target_h = SIZE_MAP[size]
 
