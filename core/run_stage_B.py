@@ -7,6 +7,7 @@ from core.stage_B.adjust_color import adjust_color_image, AdjustColorError
 from core.stage_B.add_background import add_background_color
 from core.stage_B.resize_img import resize_image, ResizeError
 from core.stage_B.add_layout import layout_4R, LayoutError
+from core.save_img import save_img, SaveImageError
 
 class StageBError(Exception):
     def __init__(self, code: str, message: str):
@@ -49,11 +50,15 @@ def run_stage_B (
         final_img = resize_image(bg_img, size)
 
         # đưa ảnh vào khung in 
-        canvas = layout_4R(final_img, size)        
+        if(print_form):
+            canvas = layout_4R(final_img, size)        
+        else:
+            canvas = final_img
         
-        canvas.show()
+        # Lưu ảnh lên cloud
+        result = save_img(image=canvas, folder="potrait_photos", format="PNG")
 
-        return
+        return result["secure_url"]
     
     except ValidateError as e:
         raise StageBError(
@@ -76,6 +81,12 @@ def run_stage_B (
     except LayoutError as e:
         raise StageBError(
             code="LAYOUT_FAILED",
+            message= str(e)
+        )
+    
+    except SaveImageError as e:
+        raise StageBError(
+            code="SAVE_IMAGE_FAILED",
             message= str(e)
         )
 

@@ -34,7 +34,7 @@ class EditImage(BaseModel):
     brightness: int = 100
     contrast: int = 100
     saturation: int = 100
-    printForm: str = ""
+    printForm: bool = False
 
 # API xử lý ảnh Stage A
 @app.post("/api/upload")
@@ -82,11 +82,11 @@ def get_status(job_id: str):
 @app.post('/api/edit')
 async def edit_image(editImage: EditImage):
     try:
-        run_stage_B(editImage.file, editImage.bgColor, editImage.size, editImage.brightness, editImage.contrast, editImage.saturation, editImage.printForm)
+        result = run_stage_B(editImage.file, editImage.bgColor, editImage.size, editImage.brightness, editImage.contrast, editImage.saturation, editImage.printForm)
 
         return {
             "success": True,
-            "img_url": ""
+            "img_url": result
         }
 
     except StageBError as e: 

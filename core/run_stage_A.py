@@ -1,5 +1,6 @@
 from core.job_store import update_job
-from core.stage_A import remove_background, align_and_crop_image, save_img
+from core.stage_A import remove_background, align_and_crop_image
+from core.save_img import save_img
 import os 
 
 def run_stage_A(job_id: str, image_path: str):
@@ -31,7 +32,7 @@ def run_stage_A(job_id: str, image_path: str):
         result = align_and_crop_image(img)
 
         # A4. Save
-        save_img(image=result, public_id=job_id, folder="potrait_photos", format="PNG")
+        result = save_img(image=result, public_id=job_id, folder="potrait_photos", format="PNG")
         
         # Xóa file tạm trong Storage/uploads
         if os.path.exists(image_path):
