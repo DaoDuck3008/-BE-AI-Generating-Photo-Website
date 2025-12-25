@@ -19,7 +19,6 @@ def run_stage_A(job_id: str, image_path: str):
             progress=40,
             message="Tách nền AI"
         )
-        print("we are here")
         img = remove_background(image_path)
 
         # A3. Align & crop
