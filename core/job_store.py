@@ -12,7 +12,7 @@ def create_job():
         "message": ""
     }
 
-    redis_client.set(job_id, json.dumps(job_data), ex= 180)
+    redis_client.set(job_id, json.dumps(job_data), ex= 30*60)
     return job_id
 
 def update_job(job_id, **kwargs):

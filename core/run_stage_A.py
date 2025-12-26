@@ -36,7 +36,6 @@ def run_stage_A(job_id: str, image: Image.Image):
         # A4. Save
         result = save_img(image=result, public_id=job_id, folder="potrait_photos", format="PNG")
         
-        
         update_job(
             job_id,
             status="done",
@@ -44,9 +43,6 @@ def run_stage_A(job_id: str, image: Image.Image):
             progress=100,
             message="Hoàn tất"
         )
-        
-        # Xong hết thì xóa job khỏi Cache
-        delete_job(job_id)
 
     except Exception as e:
         update_job(

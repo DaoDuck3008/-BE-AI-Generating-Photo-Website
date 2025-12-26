@@ -24,8 +24,17 @@ ROTATE_FOR_LAYOUT = {
     "2x2 inch": True,
 }
 
+BORDER = 3
+
 class LayoutError(Exception):
     pass
+
+def add_border(image: Image.Image):
+    w, h = image.size
+    bordered = Image.new("RGB", (w + BORDER*2 , h + BORDER*2), "#b9bfcd")
+    bordered.paste(image, (BORDER, BORDER))
+
+    return bordered
 
 def layout_4R (image: Image.Image, size): 
     if size not in SIZE_MAP:
@@ -56,8 +65,10 @@ def layout_4R (image: Image.Image, size):
             
             if rotate: 
                 img = image.rotate(90, expand= True) # xoay ngang ảnh 
-                canvas.paste(img, (x,y))
             else:
-                canvas.paste(image, (x,y))
+                img = image
+            
+            img = add_border(img)
+            canvas.paste(img, (x,y))
 
     return canvas
