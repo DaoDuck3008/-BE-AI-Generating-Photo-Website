@@ -1,34 +1,22 @@
-from typing import Dict
+import uuid 
+import json
+from utilities.redis_client import redis_client
 
-# In-memory job store to keep track of job statuses and details
-JOB_STORE: Dict[str, Dict] = {}
+def create_job():
+    job_id = str(uuid.uuid4()) # tạo mã jobID
 
-def create_job(job_id: str):
-    JOB_STORE[job_id] = {
-        "status": "processing",
-        "step": "init",
+    job_data = { 
+        "status": "pending",
+        "step": "",
         "progress": 0,
-        "message": "Khởi tạo"
+        "message": ""
     }
 
-def update_job(
-        job_id: str,
-        *,
-        status: str = None,
-        step: str = None,
-        progress: int = None,
-        message: str = None
-):
-    if job_id not in JOB_STORE:
-        return
-    
-    job = JOB_STORE[job_id]
+    redis_client.set(job_id, json.dumps(job_data), ex= 180)
+    return job_id
 
-    if status is not None:
-        job["status"] = status
-    if step is not None:
-        job["step"] = step
-    if progress is not None:
-        job["progress"] = progress
-    if message is not None:
-        job["message"] = message
+def update_job(job_id, **kwargs):
+    job = json.loads(redis_client.get(job_id))
+
+    job.update(kwargs)
+    redis_client.set(job_id, json.dumps(job))

@@ -33,8 +33,10 @@ def run_stage_B (
         response.raise_for_status()  # lỗi nếu 4xx / 5xx
 
         # Lưu tạm vào BytesIO rồi mở ảnh bằng Pillow
-        img_bytes = BytesIO(response.content)
-        img  = Image.open(img_bytes).convert("RGBA") 
+        with BytesIO(response.content) as img_bytes:
+            img = Image.open(img_bytes).convert("RGBA") 
+            img = img.copy()
+             
         # Điều chỉnh màu
         rgb_img = img.convert("RGB")
         adjusted_rgb = adjust_color_image(rgb_img,brightness,contrast,saturation)

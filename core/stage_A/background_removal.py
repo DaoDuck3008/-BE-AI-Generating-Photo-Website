@@ -19,14 +19,13 @@ transform_image = transforms.Compose([
 ])
 
 
-def remove_background(image_path: str):
+def remove_background(rgb_img: Image.Image):
     print("🔍 Stage A2 - Removing background...")
 
-    if not image_path:
+    if not rgb_img:
         raise ValueError("Invalid image_path")
 
-    image = Image.open(image_path).convert("RGB")
-    input_tensor = transform_image(image).unsqueeze(0).to(device)
+    input_tensor = transform_image(rgb_img).unsqueeze(0).to(device)
 
     with torch.no_grad():
         pred = birefnet(input_tensor)
@@ -37,10 +36,10 @@ def remove_background(image_path: str):
     alpha = pred.sigmoid().cpu()[0, 0].numpy()
     alpha = np.clip(alpha, 0, 1)
 
-    alpha = cv2.resize(alpha, image.size, interpolation=cv2.INTER_CUBIC)
+    alpha = cv2.resize(alpha, rgb_img.size, interpolation=cv2.INTER_CUBIC)
 
     alpha_pil = Image.fromarray((alpha * 255).astype(np.uint8))
-    refined = refine_foreground(image, alpha_pil, r=90, device=device)
+    refined = refine_foreground(rgb_img, alpha_pil, r=90, device=device)
     refined.putalpha(alpha_pil)
 
     print("✅ Stage A2 - Background removed.")
