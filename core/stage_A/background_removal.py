@@ -20,8 +20,6 @@ transform_image = transforms.Compose([
 
 
 def remove_background(rgb_img: Image.Image):
-    print("🔍 Stage A2 - Removing background...")
-
     if not rgb_img:
         raise ValueError("Invalid image_path")
 
@@ -42,5 +40,4 @@ def remove_background(rgb_img: Image.Image):
     refined = refine_foreground(rgb_img, alpha_pil, r=90, device=device)
     refined.putalpha(alpha_pil)
 
-    print("✅ Stage A2 - Background removed.")
     return refined

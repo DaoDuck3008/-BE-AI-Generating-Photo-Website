@@ -58,6 +58,4 @@ def align_and_crop_image(
         # Tỉ lệ đã đúng
         cropped = shifted
 
-    print("✅ Stage A3 - Image aligned and cropped.")
-    
     return Image.fromarray(cropped, mode="RGBA")
