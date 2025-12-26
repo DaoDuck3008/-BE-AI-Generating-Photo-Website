@@ -20,3 +20,6 @@ def update_job(job_id, **kwargs):
 
     job.update(kwargs)
     redis_client.set(job_id, json.dumps(job))
+
+def delete_job(job_id):
+    redis_client.delete(job_id)

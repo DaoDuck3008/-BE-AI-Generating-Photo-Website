@@ -1,8 +1,6 @@
-from core.job_store import update_job
+from core.job_store import update_job, delete_job
 from core.stage_A import remove_background, align_and_crop_image
 from core.save_img import save_img
-from fastapi import UploadFile
-from io import BytesIO
 from PIL import Image
 
 def run_stage_A(job_id: str, image: Image.Image):
@@ -38,6 +36,7 @@ def run_stage_A(job_id: str, image: Image.Image):
         # A4. Save
         result = save_img(image=result, public_id=job_id, folder="potrait_photos", format="PNG")
         
+        
         update_job(
             job_id,
             status="done",
@@ -45,6 +44,9 @@ def run_stage_A(job_id: str, image: Image.Image):
             progress=100,
             message="Hoàn tất"
         )
+        
+        # Xong hết thì xóa job khỏi Cache
+        delete_job(job_id)
 
     except Exception as e:
         update_job(
