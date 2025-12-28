@@ -1,6 +1,7 @@
-from core.job_store import update_job, delete_job
-from core.stage_A import remove_background, align_and_crop_image
-from core.save_img import save_img
+from core.job_store import update_job
+from core.stage_A.background_removal import remove_background, RemoveBackgroundError
+from core.stage_A.align_and_crop import align_and_crop_image
+from core.save_img import save_img, SaveImageError
 from PIL import Image
 
 def run_stage_A(job_id: str, image: Image.Image):
@@ -42,6 +43,19 @@ def run_stage_A(job_id: str, image: Image.Image):
             step="done",
             progress=100,
             message="Hoàn tất"
+        )
+    except RemoveBackgroundError as e: 
+        update_job(
+            job_id,
+            status="error",
+            message=str(e)
+        )
+
+    except SaveImageError as e:
+        update_job(
+            job_id,
+            status="error",
+            message=str(e)
         )
 
     except Exception as e:

@@ -18,10 +18,13 @@ transform_image = transforms.Compose([
     )
 ])
 
+class RemoveBackgroundError(Exception):
+    pass
+
 
 def remove_background(rgb_img: Image.Image):
     if not rgb_img:
-        raise ValueError("Invalid image_path")
+        raise RemoveBackgroundError("Invalid image_path")
 
     input_tensor = transform_image(rgb_img).unsqueeze(0).to(device)
 
