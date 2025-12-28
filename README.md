@@ -77,13 +77,13 @@ The backend is designed with a **job-based workflow** to safely handle long-runn
 The backend follows a modular and layered design:
 
 API Layer
-↓
+->
 Stage Runner (run_stage_A, run_stage_B)
-↓
+->
 Processing Modules (background_removal, layout, resize, color adjust)
-↓
+->
 Redis (job status)
-↓
+->
 Cloudinary (final image storage)
 
 Each layer has a single responsibility to ensure maintainability and scalability.
